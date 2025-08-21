@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌌 Nova
 
-## Getting Started
+Nova is a Lovable-style no-code builder with Solana wallet integration.  
+It lets anyone build apps easily while paying for usage credits directly with their Solana wallet (SOL or USDC).  
+Nova keeps the Web2 simplicity of Lovable while adding lightweight Web3 features like wallet payments and referral-based airdrops.  
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚩 Problem
+AI-powered app builders like Lovable make it simple to generate apps, but payments are limited to Web2 rails (credit cards, Stripe, etc.).  
+This excludes crypto-native users and offers no on-chain incentives for growth.  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 💡 Solution
+Nova bridges the gap by integrating the Solana wallet adapter for credit purchases.  
+- Users can top up credits with **SOL/USDC**  
+- Invite friends and earn **airdrop rewards** through referrals  
+- Optional **wallet login** for Web3-native access  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ✨ Features
+- No-code app builder (Lovable-style flow)  
+- Credit system for usage  
+- Pay with **Solana wallet (SOL/USDC)**  
+- Referral system with airdrop rewards  
+- Web2-friendly UX with optional Web3 login  
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔮 Future Scope
+- On-chain receipts for purchases  
+- Tokenized credit vouchers (NFTs)  
+- Web3-native app templates inside the builder  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🤝 Contributing
+Pull requests and feature suggestions are welcome. Please open an issue first to discuss what you’d like to add.  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📜 License
+MIT License – free to use and modify.
