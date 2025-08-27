@@ -53,6 +53,7 @@ export const MessageForm = ({ projectId }: Props) => {
 
     const isPending = createMessage.isPending;
     const isButtonDisabled = isPending || !form.formState.isValid;
+    
 
     return (
         <Form {...form}>
