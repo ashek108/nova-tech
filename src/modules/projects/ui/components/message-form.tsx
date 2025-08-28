@@ -10,6 +10,8 @@ import { useTRPC } from "@/trpc/client";
 import {cn} from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormField } from "@/components/ui/form";
+import { Usage } from "./usage";
+import { useRouter } from "next/router";
 
 interface Props {
     projectId: string;
@@ -23,8 +25,9 @@ const formSchema = z.object({
 
 export const MessageForm = ({ projectId }: Props) => {
     const [isFocused, setIsFocused] = useState(false);
-    const showUsage = false;
     const trpc = useTRPC();
+    const router = useRouter();
+    const {data: usage} = useQuery(trpc.usage.status.queryOptions());
     const queryClient = useQueryClient();
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -38,9 +41,14 @@ export const MessageForm = ({ projectId }: Props) => {
         onSuccess: () => {
             form.reset();
             queryClient.invalidateQueries(trpc.messages.getMany.queryOptions({projectId}));
+            queryClient.invalidateQueries(trpc.usage.status.queryOptions());
         },
         onError: (error) => {
             toast.error(error.message);
+
+            if (error.data?.code === "TOO_MANY_REQUESTS") {
+                router.push("/pricing");
+            }
         }
     }));
 
@@ -53,10 +61,17 @@ export const MessageForm = ({ projectId }: Props) => {
 
     const isPending = createMessage.isPending;
     const isButtonDisabled = isPending || !form.formState.isValid;
+    const showUsage = !!usage;
     
 
     return (
         <Form {...form}>
+            {showUsage && (
+                <Usage
+                    points={usage.remainingPoints}
+                    msBeforeNext={usage.msBeforeNext}
+                />
+            )}
             <form onSubmit={form.handleSubmit(onSubmit)} className={cn(
                 "relative border p-4 pt-1 rounded-xl bg-sidebar dark:bg-sidebar transition-all",
                 isFocused && "shadow-xs",
