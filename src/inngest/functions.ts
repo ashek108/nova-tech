@@ -1,9 +1,9 @@
+import {z} from "zod";
 import { inngest } from "./client";
 import {Sandbox} from "@e2b/code-interpreter";
 import { openai, createAgent, createTool, createNetwork, createState } from "@inngest/agent-kit";
-import type { AnyZodType, Tool, Message } from "@inngest/agent-kit"; 
+import type { Tool, Message } from "@inngest/agent-kit"; 
 import { getSandbox, lastAssistantTextMessageContent, parseAgentOutput } from "./utils";
-import {z} from "zod";
 import { FRAGMENT_TITLE_PROMPT, PROMPT, RESPONSE_PROMPT } from "@/prompt";
 import { prisma } from "@/lib/db";
 import { SANDBOX_TIMEOUT } from "./types";
@@ -54,11 +54,11 @@ export const codeAgentFunction = inngest.createFunction(
   });
 
     const codeAgent = createAgent<AgentState>({
-      name: "summarizer",
+      name: "code-agent",
       description: "An expert coding agent",
       system: PROMPT,
       model: openai({ 
-        model: "gpt-4o-mini",
+        model: "gpt-4.1",
         defaultParameters: {
           temperature: 0.1,
         }
@@ -69,7 +69,7 @@ export const codeAgentFunction = inngest.createFunction(
         description: "Use the terminal to run commands",
         parameters: z.object({
           command: z.string()
-        })as unknown as AnyZodType,
+        }),
         handler: async ({ command}, {step}) => {
           return await step?.run("terminal", async () => {
             const buffers = {stdout: "", stderr: ""};
@@ -104,7 +104,7 @@ export const codeAgentFunction = inngest.createFunction(
                 content: z.string(),
               }),
             ),
-          })as unknown as AnyZodType,
+          }),
           handler: async ({ files }, { step, network }: Tool.Options<AgentState>) => {
             const newFiles =await step?.run("createOrUpdateFiles", async () => {
               try {
@@ -133,7 +133,7 @@ export const codeAgentFunction = inngest.createFunction(
             description: "Read files from the sandbox",
             parameters: z.object({
               files: z.array(z.string()),
-            })as unknown as AnyZodType,
+            }),
             handler: async ({files}, {step}) => {
               return await step?.run("readFiles", async () => {
                 try {
@@ -189,7 +189,7 @@ export const codeAgentFunction = inngest.createFunction(
       description: "Generate a title for a code fragment",
       system: FRAGMENT_TITLE_PROMPT,
       model: openai({ 
-        model: "gpt-4o-mini",
+        model: "gpt-4.1",
         defaultParameters: {
           temperature: 0.1,
         },
@@ -201,7 +201,7 @@ export const codeAgentFunction = inngest.createFunction(
       description: "Generate a response for a code fragment",
       system: RESPONSE_PROMPT,
       model: openai({ 
-        model: "gpt-4o-mini",
+        model: "gpt-4.1",
         defaultParameters: {
           temperature: 0.1,
         },
