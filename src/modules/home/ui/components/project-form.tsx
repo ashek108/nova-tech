@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormField } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { PROJECT_TEMPLATES } from "../../constants";
+import { useClerk } from "@clerk/nextjs";
 
 const formSchema = z.object({
     value: z.string()
@@ -22,6 +23,7 @@ const formSchema = z.object({
 });
 
 export const ProjectForm = () => {
+    const clerk = useClerk();
     const router = useRouter();
     const [isFocused, setIsFocused] = useState(false);
     const trpc = useTRPC();
@@ -41,6 +43,9 @@ export const ProjectForm = () => {
         },
         onError: (error) => {
             toast.error(error.message);
+            if (error.data?.code === "UNAUTHORIZED") {
+                clerk.openSignIn();
+            }
         }
     }));
 
