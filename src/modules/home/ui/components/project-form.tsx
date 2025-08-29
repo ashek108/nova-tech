@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import {zodResolver} from "@hookform/resolvers/zod";
 import TextAreaAutoSize from "react-textarea-autosize";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import {cn} from "@/lib/utils";
 import { Button } from "@/components/ui/button";
