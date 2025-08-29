@@ -5,6 +5,7 @@ Nova is a Lovable-style no-code builder with Solana wallet integration.
 It lets anyone build apps easily while paying for usage credits directly with their Solana wallet (SOL or USDC).  
 Nova keeps the Web2 simplicity of Lovable while adding lightweight Web3 features like wallet payments and referral-based airdrops.  
 
+(WEB3 PART IS YET TO BE ADDED INTO THE CODE)
 ---
 
 ## 🚩 Problem
