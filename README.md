@@ -1,4 +1,5 @@
 # 🌌 Nova
+# https://nova-tech-psi.vercel.app
 
 Nova is a Lovable-style no-code builder with Solana wallet integration.  
 It lets anyone build apps easily while paying for usage credits directly with their Solana wallet (SOL or USDC).  
