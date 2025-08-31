@@ -1,26 +1,21 @@
 // app/api/proxy/route.ts
-import { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const targetUrl = searchParams.get("url");
-  if (!targetUrl) {
-    return new Response("Missing url parameter", { status: 400 });
-  }
+  const url = searchParams.get("url");
+  if (!url) return NextResponse.json({ error: "Missing url" }, { status: 400 });
 
-  try {
-    const res = await fetch(targetUrl);
-    const headers = new Headers(res.headers);
+  const res = await fetch(url);
 
-    headers.delete("x-frame-options");
-    headers.delete("content-security-policy");
+  // Drop headers that block iframes
+  const headers = new Headers(res.headers);
+  headers.delete("x-frame-options");
+  headers.delete("content-security-policy");
 
-    return new Response(res.body, {
-      status: res.status,
-      headers,
-    });
-  } catch (err) {
-    console.error("Proxy error:", err);
-    return new Response("Proxy error", { status: 500 });
-  }
+  const body = await res.text();
+  return new NextResponse(body, {
+    status: res.status,
+    headers,
+  });
 }
