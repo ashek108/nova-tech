@@ -1,21 +1,31 @@
 // app/api/proxy/route.ts
-import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const url = searchParams.get("url");
-  if (!url) return NextResponse.json({ error: "Missing url" }, { status: 400 });
+  const targetUrl = searchParams.get("url");
 
-  const res = await fetch(url);
+  if (!targetUrl) {
+    return new Response("Missing url", { status: 400 });
+  }
 
-  // Drop headers that block iframes
-  const headers = new Headers(res.headers);
-  headers.delete("x-frame-options");
-  headers.delete("content-security-policy");
+  try {
+    const res = await fetch(targetUrl, {
+      headers: { "User-Agent": "Next.js Proxy" },
+    });
 
-  const body = await res.text();
-  return new NextResponse(body, {
-    status: res.status,
-    headers,
-  });
+    // Pass through headers carefully
+    const headers = new Headers(res.headers);
+    headers.set("access-control-allow-origin", "*");
+    headers.delete("content-security-policy");
+    headers.delete("x-frame-options");
+
+    const body = await res.text();
+    return new Response(body, {
+      status: res.status,
+      headers,
+    });
+  } catch (e) {
+    return new Response("Proxy error", { status: 500 });
+  }
 }
