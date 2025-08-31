@@ -61,7 +61,7 @@ export function FragmentWeb({ data }: Props) {
                 key={fragmentKey}
                 className="w-full h-full"
                 sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
-                src={`/api/proxy?url=${encodeURIComponent(data.sandboxUrl)}`}
+                src={data.sandboxUrl}
                 loading="lazy"
             />
         </div>
