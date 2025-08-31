@@ -60,7 +60,7 @@ export function FragmentWeb({ data }: Props) {
             <iframe
                 key={fragmentKey}
                 className="w-full h-full"
-                sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
+                sandbox="allow-same-origin allow-scripts allow-forms"
                 src={`/api/proxy?url=${encodeURIComponent(data.sandboxUrl)}`}
                 loading="lazy"
             />

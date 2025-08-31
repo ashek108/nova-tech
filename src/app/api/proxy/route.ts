@@ -1,34 +1,21 @@
-import { NextRequest } from "next/server";
+// app/api/proxy/route.ts
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const targetUrl = searchParams.get("url");
+  const url = searchParams.get("url");
+  if (!url) return NextResponse.json({ error: "Missing url" }, { status: 400 });
 
-  if (!targetUrl) {
-    return new Response("Missing url parameter", { status: 400 });
-  }
+  const res = await fetch(url);
 
-  try {
-    const res = await fetch(targetUrl, {
-      headers: {
-        // forward headers like User-Agent if needed
-        "User-Agent": req.headers.get("user-agent") || "",
-      },
-    });
+  // Drop headers that block iframes
+  const headers = new Headers(res.headers);
+  headers.delete("x-frame-options");
+  headers.delete("content-security-policy");
 
-    const headers = new Headers(res.headers);
-    headers.delete("x-frame-options");
-    headers.delete("content-security-policy");
-
-    // don’t force text/html → keep original content type
-    const body = res.body;
-
-    return new Response(body, {
-      status: res.status,
-      headers,
-    });
-  } catch (err) {
-    console.error("Proxy error:", err);
-    return new Response("Proxy error", { status: 500 });
-  }
+  const body = await res.text();
+  return new NextResponse(body, {
+    status: res.status,
+    headers,
+  });
 }
