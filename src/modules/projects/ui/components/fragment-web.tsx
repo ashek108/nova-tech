@@ -67,3 +67,5 @@ export function FragmentWeb({ data }: Props) {
         </div>
     )
 };
+
+//hahahaha went through a lot of bs with this project
